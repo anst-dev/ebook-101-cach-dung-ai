@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>101 Cách Dùng AI Miễn Phí — Ebook Reader</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Cẩm nang thực hành 101 cách dùng AI miễn phí giúp tối ưu hóa hiệu suất học tập, giảng dạy, lập trình, sáng tạo nội dung, kinh doanh và đời sống.">
+  <meta name="author" content="Hermes Agent">
+  <meta property="og:title" content="101 Cách Dùng AI Miễn Phí — Ebook Reader">
+  <meta property="og:description" content="Trang đọc ebook responsive tối ưu cho mọi loại màn hình di động, máy tính bảng và máy tính.">
+  <meta property="og:type" content="book">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <button class="btn-icon menu-toggle" id="sidebar-toggle" aria-label="Mở mục lục">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="header-title-container">
+        <h1 id="book-title">101 Cách Dùng AI Miễn Phí</h1>
+        <p id="book-subtitle">Cẩm nang thực hành cho mọi người</p>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="btn-icon" id="settings-toggle" aria-label="Cài đặt hiển thị">
+        <i data-lucide="settings"></i>
+      </button>
+    </div>
+    
+    <!-- Thanh tiến trình đọc -->
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- App Container (Sidebar + Reader) -->
+  <div id="app-container">
+    
+    <!-- Sidebar (Mục lục & Tìm kiếm) -->
+    <aside id="sidebar">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i data-lucide="search"></i>
+          <input type="text" id="search-input" class="search-input" placeholder="Tìm chương, từ khóa...">
+        </div>
+      </div>
+      <div class="chapters-list" id="chapters-list">
+        <!-- Chapters dynamically loaded here -->
+      </div>
+    </aside>
+
+    <!-- Main Content Reader -->
+    <main id="reader-container">
+      <div class="reader-wrapper">
+        <article class="reader-content" id="reader-content">
+          <!-- Ebook content dynamically rendered here -->
+        </article>
+        
+        <!-- Phân trang cuối chương -->
+        <nav class="reader-nav">
+          <button class="nav-btn" id="prev-btn">
+            <i data-lucide="chevron-left"></i> Chương trước
+          </button>
+          <button class="nav-btn" id="next-btn">
+            Chương sau <i data-lucide="chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Bảng cài đặt hiển thị (Settings) -->
+  <div id="settings-panel">
+    <div class="settings-group">
+      <span class="settings-label">Chế độ đọc</span>
+      <div class="theme-options">
+        <button class="theme-btn active" data-val="light">Sáng</button>
+        <button class="theme-btn" data-val="dark">Tối</button>
+        <button class="theme-btn" data-val="sepia">Sepia</button>
+      </div>
+    </div>
+    
+    <div class="settings-group">
+      <span class="settings-label">Cỡ chữ</span>
+      <div class="font-size-controls">
+        <button class="font-size-btn" id="font-size-dec">A-</button>
+        <span class="font-size-display" id="font-size-val">18px</span>
+        <button class="font-size-btn" id="font-size-inc">A+</button>
+      </div>
+    </div>
+    
+    <div class="settings-group">
+      <span class="settings-label">Phông chữ</span>
+      <div class="font-options">
+        <button class="font-btn active" data-val="sans">Không chân</button>
+        <button class="font-btn" data-val="serif">Có chân (Sách)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nút mở mục lục nhanh (TOC) trên điện thoại -->
+  <button id="toc-trigger" style="display: none;" aria-label="Mục lục chương">
+    <i data-lucide="list"></i>
+  </button>
+
+  <!-- Drawer Mục lục nhanh di động (TOC Drawer) -->
+  <div id="toc-drawer">
+    <div class="toc-drawer-header">
+      <span class="toc-drawer-title">Các cách dùng AI trong chương</span>
+      <button class="btn-icon" id="toc-drawer-close" aria-label="Đóng mục lục nhanh">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    <div class="toc-drawer-list" id="toc-drawer-list">
+      <!-- TOC items dynamically loaded here -->
+    </div>
+  </div>
+
+  <!-- Overlay nền tối trên di động -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Scripts -->
+  <!-- Marked.js (Markdown Parser) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Dữ liệu sách và Logic xử lý -->
+  <script src="ebook-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

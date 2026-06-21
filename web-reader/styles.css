@@ -1,0 +1,784 @@
+/* CSS Variables cho Theme & Typography */
+:root {
+  /* Mặc định: Chế độ Sáng (Light Mode) */
+  --bg-primary: #fbfbfc;
+  --bg-secondary: #f3f4f6;
+  --bg-reader: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --accent-color: #2563eb;
+  --accent-light: #eff6ff;
+  --border-color: #e5e7eb;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  /* Cài đặt Font & Cỡ chữ mặc định */
+  --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-family-serif: 'Lora', Georgia, serif;
+  --font-family: var(--font-family-sans);
+  --font-size: 18px;
+  --line-height: 1.65;
+  --reader-max-width: 720px;
+  --header-height: 60px;
+  --sidebar-width: 320px;
+}
+
+/* Theme: Dark Mode */
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-reader: #0f172a;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --accent-color: #3b82f6;
+  --accent-light: #1e293b;
+  --border-color: #334155;
+}
+
+/* Theme: Sepia (Đọc sách cổ điển) */
+[data-theme="sepia"] {
+  --bg-primary: #f4edd8;
+  --bg-secondary: #eae0c2;
+  --bg-reader: #fbf6e9;
+  --text-primary: #433422;
+  --text-secondary: #5f4b32;
+  --text-muted: #a08a70;
+  --accent-color: #8c6239;
+  --accent-light: #eae0c2;
+  --border-color: #dcd0b4;
+}
+
+/* Cài đặt Font Family */
+[data-font="sans"] {
+  --font-family: var(--font-family-sans);
+}
+[data-font="serif"] {
+  --font-family: var(--font-family-serif);
+}
+
+/* Reset & Cơ bản */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Layout chính --- */
+#app-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - var(--header-height));
+  position: relative;
+  overflow: hidden;
+}
+
+/* --- Header --- */
+header {
+  height: var(--header-height);
+  background-color: var(--bg-reader);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  z-index: 50;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-title-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0.5rem;
+  max-width: 40vw;
+}
+
+header h1 {
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+header p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Nút bấm điều khiển */
+.btn-icon {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.6rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent-color);
+}
+
+.btn-icon.active {
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+}
+
+/* Thanh Tiến Trình Đọc */
+#progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--border-color);
+  z-index: 51;
+}
+
+#progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--accent-color);
+  transition: width 0.1s ease-out;
+}
+
+/* --- Sidebar (Mục lục) --- */
+aside {
+  width: var(--sidebar-width);
+  background-color: var(--bg-reader);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 40;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translateX(-100%);
+}
+
+aside.open {
+  transform: translateX(0);
+}
+
+/* Search Box trong Sidebar */
+.search-container {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper i {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--text-muted);
+  width: 16px;
+  height: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 1rem 0.6rem 2.2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px var(--accent-light);
+}
+
+/* Danh sách Chương */
+.chapters-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.chapter-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.chapter-item:hover {
+  background-color: var(--bg-secondary);
+}
+
+.chapter-item.active {
+  background-color: var(--accent-light);
+  border-left-color: var(--accent-color);
+}
+
+.chapter-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.chapter-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* --- Reader Content Area --- */
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  scroll-behavior: smooth;
+  position: relative;
+  background-color: var(--bg-primary);
+}
+
+.reader-wrapper {
+  max-width: var(--reader-max-width);
+  margin: 0 auto;
+  background-color: var(--bg-reader);
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  min-height: calc(100vh - var(--header-height) - 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Định dạng Markdown trong Reader */
+.reader-content {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+}
+
+.reader-content h1,
+.reader-content h2,
+.reader-content h3 {
+  font-family: var(--font-family-sans);
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.reader-content h1 { font-size: 2.2rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem; }
+.reader-content h2 { font-size: 1.6rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3rem; }
+.reader-content h3 { font-size: 1.25rem; color: var(--accent-color); }
+
+.reader-content p {
+  margin-bottom: 1.2rem;
+}
+
+.reader-content ul,
+.reader-content ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.5rem;
+}
+
+.reader-content li {
+  margin-bottom: 0.5rem;
+}
+
+.reader-content blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding: 0.75rem 1.2rem;
+  margin: 1.5rem 0;
+  background-color: var(--bg-secondary);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.reader-content code {
+  font-family: Consolas, Monaco, monospace;
+  background-color: var(--bg-secondary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: #e11d48;
+}
+
+/* Đậm màu code trong dark mode */
+[data-theme="dark"] .reader-content code {
+  color: #fda4af;
+}
+
+.reader-content pre {
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1.2rem;
+  border: 1px solid var(--border-color);
+}
+
+.reader-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.9em;
+  color: var(--text-primary);
+}
+
+.reader-content hr {
+  height: 1px;
+  border: none;
+  background-color: var(--border-color);
+  margin: 2rem 0;
+}
+
+.reader-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.9em;
+}
+
+.reader-content th,
+.reader-content td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.reader-content th {
+  background-color: var(--bg-secondary);
+  font-weight: 600;
+}
+
+/* Highlight các thẻ Cách dùng */
+.reader-content h3[id^="cách"] {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #4f46e5 100%);
+  color: #ffffff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  margin-top: 2.5rem;
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  width: 100%;
+}
+
+/* --- Phân trang bên dưới (Navigation) --- */
+.reader-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  user-select: none;
+  flex: 1;
+  justify-content: center;
+  max-width: 200px;
+}
+
+.nav-btn:hover {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+.nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border-color: var(--border-color);
+}
+
+/* --- Panel Cài Đặt (Settings Modal/Popover) --- */
+#settings-panel {
+  position: absolute;
+  top: calc(var(--header-height) + 5px);
+  right: 10px;
+  background-color: var(--bg-reader);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  width: 300px;
+  padding: 1.2rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeIn 0.15s ease-out;
+}
+
+#settings-panel.open {
+  display: flex;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.settings-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Chọn Theme */
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.theme-btn {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.theme-btn[data-val="light"] { background-color: #ffffff; color: #1f2937; }
+.theme-btn[data-val="dark"] { background-color: #0f172a; color: #f1f5f9; border-color: #334155; }
+.theme-btn[data-val="sepia"] { background-color: #f4edd8; color: #433422; border-color: #dcd0b4; }
+
+.theme-btn.active {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 1px;
+}
+
+/* Cỡ chữ */
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.font-size-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.font-size-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.font-size-btn:first-child {
+  border-right: 1px solid var(--border-color);
+}
+.font-size-btn:last-child {
+  border-left: 1px solid var(--border-color);
+}
+
+.font-size-display {
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Chọn Font */
+.font-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.font-btn {
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.font-btn.active {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+/* --- Overlay cho điện thoại --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 30;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* --- Mục lục rút gọn (TOC) nổi trên Mobile --- */
+#toc-trigger {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  z-index: 29;
+  border: none;
+  transition: transform 0.2s;
+}
+
+#toc-trigger:active {
+  transform: scale(0.9);
+}
+
+#toc-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-height: 70vh;
+  background-color: var(--bg-reader);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.15);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#toc-drawer.open {
+  transform: translateY(0);
+}
+
+.toc-drawer-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toc-drawer-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.toc-drawer-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.toc-drawer-item {
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background-color 0.2s;
+}
+
+.toc-drawer-item:hover {
+  background-color: var(--bg-secondary);
+}
+
+.toc-drawer-item.active {
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Media Queries (Tối ưu Responsive) --- */
+
+/* Màn hình máy tính lớn (Desktop) >= 1024px */
+@media (min-width: 1024px) {
+  aside {
+    transform: translateX(0); /* Luôn mở mặc định */
+    position: relative;
+  }
+  
+  #app-container {
+    padding-left: 0; /* Không cần dịch vì Sidebar chiếm vị trí thực tế */
+  }
+
+  .btn-icon.menu-toggle {
+    display: none; /* Không cần nút toggle sidebar trên máy tính */
+  }
+  
+  /* Layout đọc mở rộng một chút */
+  main {
+    padding: 3rem 2rem;
+  }
+
+  .reader-wrapper {
+    padding: 4rem 3.5rem;
+  }
+}
+
+/* Màn hình Tablet 768px - 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  aside.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  main {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .reader-wrapper {
+    padding: 3rem;
+  }
+}
+
+/* Màn hình điện thoại di động < 768px */
+@media (max-width: 767px) {
+  :root {
+    --font-size: 16px; /* Cỡ chữ mặc định nhỏ hơn một chút cho di động */
+  }
+
+  header {
+    padding: 0 0.5rem;
+  }
+  
+  .header-title-container {
+    max-width: 50vw;
+  }
+
+  aside {
+    width: 85%; /* Sidebar chiếm 85% chiều rộng màn hình trên điện thoại */
+  }
+
+  main {
+    padding: 1rem 0.5rem; /* Cắt lề cho màn hình nhỏ */
+  }
+
+  .reader-wrapper {
+    padding: 1.5rem 1rem; /* Thu nhỏ padding */
+    border-radius: 8px;
+    box-shadow: none; /* Bỏ shadow để trông gọn gàng, phẳng hơn */
+    min-height: calc(100vh - var(--header-height) - 2rem);
+  }
+
+  .reader-content h1 {
+    font-size: 1.7rem;
+  }
+  .reader-content h2 {
+    font-size: 1.4rem;
+  }
+  .reader-content h3 {
+    font-size: 1.15rem;
+  }
+
+  /* Cố định nút Prev/Next chạm đáy dễ bấm hơn */
+  .reader-nav {
+    gap: 0.5rem;
+  }
+
+  .nav-btn {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+}
