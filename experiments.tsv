@@ -1,0 +1,11 @@
+timestamp	tag	metric	status	description
+2026-06-20T09:00	cfg	1	keep	Hermes config direct Z.AI
+2026-06-20T09:05	cfg	1	keep	agy wrapper working via transcript JSONL
+2026-06-20T09:10	cfg	1	keep	NotebookLM login OK + notebook created
+2026-06-20T09:15	cfg	1	keep	autoresearch-loop skill installed
+2026-06-20T09:20	ebook	15	keep	Part 1 written via NotebookLM
+2026-06-20T09:25	ebook	30	keep	Part 2+3 written via NotebookLM
+2026-06-20T09:30	ebook	57	keep	Part 4+5+6 written via NotebookLM
+2026-06-20T09:35	ebook	101	keep	Part 7+8+Conclusion written
+2026-06-20T09:40	ebook	7918	keep	Full ebook combined: 7918 words
+2026-06-20T09:45	pdf	0	pending	agy writing PDF export script

@@ -1,0 +1,9 @@
+reference/
+assets/fonts/
+assets/gtk3/
+*.ttf
+__pycache__/
+*.pyc
+.env
+*.tmp
+.hermes-tmp*
